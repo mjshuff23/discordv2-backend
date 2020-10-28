@@ -11,7 +11,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:4000" }));
 
-app.use("/", usersRouter);
+app.use("/users", usersRouter);
 
 
 // Catch unhandled requests and forward to error handler.
