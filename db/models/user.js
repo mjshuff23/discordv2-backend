@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     };
     User.belongsToMany(models.Server_Member, columnMappingServerMembers);
 
-    // const columnMappingDMServerUsers = {
-    //   through: 'DM_Server_User',
-    //   foreignKey: "userId",
-    //   otherKey: "DMServerId",
-    // };
-    // User.belongsToMany(models.DM_Server_User, columnMappingDMServerUsers);
+    const columnMappingDMServerUsers = {
+      through: 'DM_Server_User',
+      foreignKey: "userId",
+      otherKey: "DMServerId",
+    };
+    User.belongsToMany(models.DM_Server, columnMappingDMServerUsers);
 
   };
   return User;
