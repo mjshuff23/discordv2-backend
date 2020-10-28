@@ -7,12 +7,12 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     DM_Server.hasMany(models.Direct_Message, { foreignkey: 'DMServerId'})
 
-    // const columnMappingDMServerUsers = {
-    //   through: 'DM_Server_User',
-    //   foreignKey: "DMServerId",
-    //   otherKey: "userId",
-    // };
-    // DM_Server.belongsToMany(models.DM_Server_User, columnMappingDMServerUsers)
+    const columnMappingDMServerUsers = {
+      through: 'DM_Server_User',
+      foreignKey: "DMServerId",
+      otherKey: "userId",
+    };
+    DM_Server.belongsToMany(models.User, columnMappingDMServerUsers)
 
   };
   return DM_Server;
