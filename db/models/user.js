@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       otherKey: "serverId",
     };
-    User.belongsToMany(models.Server_Member, columnMappingServerMembers);
+    User.belongsToMany(models.Server, columnMappingServerMembers);
 
     const columnMappingDMServerUsers = {
       through: 'DM_Server_User',
