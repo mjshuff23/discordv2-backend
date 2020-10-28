@@ -2,10 +2,18 @@
 module.exports = (sequelize, DataTypes) => {
   const Server = sequelize.define('Server', {
     title: DataTypes.STRING,
-    ownId: DataTypes.INTEGER
+    ownerId: DataTypes.INTEGER
   }, {});
   Server.associate = function(models) {
-    // associations can be defined here
+    Server.belongsTo(models.User, { foreignKey: 'ownerId'});
+    Server.hasMany(models.Channel, { foreignKey: 'serverId'});
+
+    const columnMappingServerMembers = {
+      through: 'Server_Member',
+      foreignKey: "serverId",
+      otherKey: "userId",
+    };
+    Server.belongsToMany(models.User, columnMappingServerMembers);
   };
   return Server;
 };

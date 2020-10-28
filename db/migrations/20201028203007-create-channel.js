@@ -9,13 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING(100)
       },
       topic: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1024)
       },
       serverId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Servers'
+        }
       },
       createdAt: {
         allowNull: false,

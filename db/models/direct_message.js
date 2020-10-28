@@ -7,6 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Direct_Message.associate = function(models) {
     // associations can be defined here
+    Direct_Message.belongsTo(models.User, { foreignKey: 'userId'});
+    Direct_Message.belongsTo(models.DM_Server, { foreignKey: 'DMServerId'});
   };
   return Direct_Message;
 };

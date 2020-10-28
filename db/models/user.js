@@ -7,7 +7,24 @@ module.exports = (sequelize, DataTypes) => {
     avatarUrl: DataTypes.STRING
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasMany(models.Server, { foreignKey: 'ownerId'});
+    User.hasMany(models.Channel_Message, { foreignKey: 'userId'});
+    User.hasMany(models.Direct_Message, { foreignKey: 'userId'});
+
+    const columnMappingServerMembers = {
+      through: 'Server_Member',
+      foreignKey: "userId",
+      otherKey: "serverId",
+    };
+    User.belongsToMany(models.Server_Member, columnMappingServerMembers);
+
+    // const columnMappingDMServerUsers = {
+    //   through: 'DM_Server_User',
+    //   foreignKey: "userId",
+    //   otherKey: "DMServerId",
+    // };
+    // User.belongsToMany(models.DM_Server_User, columnMappingDMServerUsers);
+
   };
   return User;
 };

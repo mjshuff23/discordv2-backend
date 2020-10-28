@@ -9,13 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       body: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING(2000)
       },
       userId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users'
+        }
       },
       DMServerId: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'DM_Servers'
+        }
       },
       createdAt: {
         allowNull: false,

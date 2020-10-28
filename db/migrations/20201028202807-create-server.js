@@ -9,10 +9,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING(100)
       },
-      ownId: {
-        type: Sequelize.INTEGER
+      ownerId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users'
+        }
       },
       createdAt: {
         allowNull: false,
