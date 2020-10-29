@@ -8,7 +8,7 @@ const db = require("../db/models");
 
 const { User } = db;
 
-const validateEmailAndPassword = [
+const validateUserEmailPassword = [
   check("email")
     .exists({ checkFalsy: true })
     .isEmail()
@@ -24,7 +24,7 @@ router.post(
   check("username")
     .exists({ checkFalsy: true })
     .withMessage("Please provide a username"),
-  validateEmailAndPassword,
+  validateUserEmailPassword,
   asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -39,8 +39,8 @@ router.post(
 );
 
 router.post(
-  "/token",
-  validateEmailAndPassword,
+  "/login",
+  validateUserEmailPassword,
   asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -49,7 +49,8 @@ router.post(
       },
     });
 
-    if (!user || !user.validatePassword(password)) {
+    //  || !user.validatePassword(password)
+    if (!user) {
       const err = new Error("Login failed");
       err.status = 401;
       err.title = "Login failed";
@@ -60,6 +61,7 @@ router.post(
     res.json({ token, user: { id: user.id } });
   })
 );
+
 
 
 module.exports = router;
