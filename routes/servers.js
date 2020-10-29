@@ -9,7 +9,7 @@ const { User, Server, Channel_Message, Channel, Direct_Message, DM_Server, Serve
 router.get('/', asyncHandler(async(req, res) => {
     const servers = await Server.findAll({
         where: {
-            ownerId: Number.parseInt(req.body.ownerId)
+            ownerId: Number.parseInt(req.body.userId)
         },
         include: { model : Channel }
     })
@@ -17,10 +17,10 @@ router.get('/', asyncHandler(async(req, res) => {
 }));
 
 router.post('/', asyncHandler(async(req, res) => {
-    const { title, ownerId } = req.body;
+    const { title, userId } = req.body;
     const serverInstance = await Server.create({
         title,
-        ownerId,
+        ownerId: userId,
     });
 
     const channelInstance = await Channel.create({
