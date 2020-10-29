@@ -10,7 +10,8 @@ router.get('/', asyncHandler(async(req, res) => {
     const servers = await Server.findAll({
         where: {
             ownerId: Number.parseInt(req.body.ownerId)
-        }
+        },
+        include: { model : Channel }
     })
     res.json({ servers })
 }));
@@ -21,6 +22,12 @@ router.post('/', asyncHandler(async(req, res) => {
         title,
         ownerId,
     });
+
+    const channelInstance = await Channel.create({
+        title: "home",
+        topic: "Welcome Home!",
+        serverId: serverInstance.id,
+    })
 
     const serverToReturn = {
         id: serverInstance.id,
