@@ -49,8 +49,14 @@ router.post(
       },
     });
 
-    //  || !user.validatePassword(password)
-    if (!user) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const validPassword = await bcrypt.compareSync(password, user.hashedPassword.toString());
+
+    console.log(`input hash: ${hashedPassword}
+    user hash: ${user.hashedPassword.toString()}
+    validPassword: ${validPassword}`);
+
+    if (!user || !validPassword) {
       const err = new Error("Login failed");
       err.status = 401;
       err.title = "Login failed";
