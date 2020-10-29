@@ -6,10 +6,11 @@ const { asyncHandler, handleValidationErrors } = require("../utils");
 const { User, Server, Channel_Message, Channel, Direct_Message, DM_Server, Server_Member, DM_Server_User } = db;
 
 // Find all servers related to logged in user
-router.get('/', asyncHandler(async(req, res) => {
+router.get('/:userId', asyncHandler(async (req, res) => {
+    const userId = Number.parseInt(req.params.userId);
     const servers = await Server.findAll({
         where: {
-            ownerId: Number.parseInt(req.body.userId)
+            ownerId: userId
         },
         include: { model : Channel }
     })
