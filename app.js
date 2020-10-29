@@ -4,6 +4,7 @@ const cors = require("cors");
 const { ValidationError } = require("sequelize");
 const usersRouter = require("./routes/users");
 const serversRouter = require("./routes/servers");
+const channelsRouter = require("./routes/channels");
 const { environment } = require("./config");
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use("/users", usersRouter);
 app.use("/servers", serversRouter);
+app.use('/channels', channelsRouter);
 
 
 // Catch unhandled requests and forward to error handler.
