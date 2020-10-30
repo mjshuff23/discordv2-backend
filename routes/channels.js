@@ -1,9 +1,30 @@
 const express = require("express");
 const db = require("../db/models");
 const { asyncHandler, handleValidationErrors } = require("../utils");
-const { Channel } = db;
+const { Channel, Channel_Message } = db;
 
 const router = express.Router();
+
+router.post('/:channelId/messages/add', asyncHandler(async (req, res) => {
+  const channelId = Number.parseInt(req.params.channelId);
+  const { body, userId } = req.body;
+  await Channel_Message.create({
+    body,
+    userId,
+    channelId,
+  });
+  res.status(200).json({});
+}))
+
+router.get('/:channelId/messages', asyncHandler(async (req, res) => {
+  const channelId = Number.parseInt(req.params.channelId);
+  const channelMessages = await Channel_Message.findAll({
+    where: {
+      channelId: channelId,
+    }
+  });
+  res.status(200).json({ channelMessages });
+}));
 
 router.get('/:serverId', asyncHandler(async (req, res) => {
     const channels = await Channel.findAll({
