@@ -2,15 +2,13 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/models");
 const { asyncHandler, handleValidationErrors } = require("../utils");
-
-const { User, Server, Channel_Message, Channel, Direct_Message, DM_Server, Server_Member, DM_Server_User } = db;
+const { Server, Channel } = db;
 
 // Find all servers related to logged in user
 router.get('/:userId', asyncHandler(async (req, res) => {
-    const userId = Number.parseInt(req.params.userId);
     const servers = await Server.findAll({
         where: {
-            ownerId: userId
+            ownerId: Number.parseInt(req.params.userId),
         },
         include: { model : Channel }
     })
@@ -19,14 +17,15 @@ router.get('/:userId', asyncHandler(async (req, res) => {
 
 router.post('/', asyncHandler(async(req, res) => {
     const { title, userId } = req.body;
+
     const serverInstance = await Server.create({
         title,
         ownerId: userId,
     });
 
     const channelInstance = await Channel.create({
-        title: "home",
-        topic: "Welcome Home!",
+        title: "Home",
+        topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
         serverId: serverInstance.id,
     })
 
