@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/models");
 const { asyncHandler, handleValidationErrors } = require("../utils");
-const { Server, Channel } = db;
+const { Server, Channel, Server_Members } = db;
 
 // Find all servers related to logged in user
 router.get('/:userId', asyncHandler(async (req, res) => {
@@ -23,11 +23,16 @@ router.post('/', asyncHandler(async(req, res) => {
         ownerId: userId,
     });
 
-    const channelInstance = await Channel.create({
-        title: "Home",
-        topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
-        serverId: serverInstance.id,
-    })
+    // const channelInstance = await Channel.create({
+    //     title: "Home",
+    //     topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
+    //     serverId: serverInstance.id,
+    // })
+
+    // const memberInstance = await Server_Members.create({
+    //     userId,
+    //     serverId: serverInstance.id,
+    // });
 
     const serverToReturn = {
         id: serverInstance.id,

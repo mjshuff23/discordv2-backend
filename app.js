@@ -17,7 +17,7 @@ const io = require('socket.io')(http);
 // Setup middleware
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: true }));
 
 // Setup api routes
 app.use("/users", usersRouter);
@@ -71,7 +71,6 @@ io.on('connection', async (socket) => {
     //        this is why we have to send the message back to original socket
 
     socket.on(channel.id, async ({ message, userId }) => {
-      console.log(`${channel.title} -- ${userId}: ${message}`);
       const newMessage = await addMessageToChannel(userId, channel.id, message);
       socket.to(channel.id).emit(channel.id, newMessage);
       socket.emit(channel.id, newMessage);
