@@ -23,11 +23,11 @@ router.post('/', asyncHandler(async(req, res) => {
         ownerId: userId,
     });
 
-    // const channelInstance = await Channel.create({
-    //     title: "Home",
-    //     topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
-    //     serverId: serverInstance.id,
-    // })
+    const channelInstance = await Channel.create({
+        title: "Home",
+        topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
+        serverId: serverInstance.id,
+    })
 
     // const memberInstance = await Server_Members.create({
     //     userId,

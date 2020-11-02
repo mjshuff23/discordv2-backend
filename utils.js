@@ -20,7 +20,6 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 const addMessageToChannel = async (userId, channelId, messageContent) => {
-  console.log('Got here');
   // Attempt to find Channel and create Message to database
   try {
     // Find user by username

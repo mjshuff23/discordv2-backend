@@ -103,5 +103,18 @@ router.post(
   })
 );
 
+router.get('/:userId', asyncHandler(async (req, res, next) => {
+  const userId = Number.parseInt(req.params.userId);
+  const user = await User.findByPk(userId);
+  if (!user) {
+    const err = new Error("No User Found");
+    err.status = 404;
+    err.title = "Invalid User";
+    err.errors = ["User does not exist"];
+    return next(err);
+  }
+  res.json({ username: user.username });
+}));
+
 
 module.exports = router;
