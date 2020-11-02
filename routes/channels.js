@@ -1,7 +1,7 @@
 const express = require("express");
 const db = require("../db/models");
 const { asyncHandler, handleValidationErrors } = require("../utils");
-const { Channel, Channel_Message } = db;
+const { Channel, Channel_Message, User } = db;
 
 const router = express.Router();
 
@@ -22,8 +22,10 @@ router.get('/:channelId/messages', asyncHandler(async (req, res) => {
   const channelMessages = await Channel_Message.findAll({
     where: {
       channelId: channelId,
-    }
+      // include: User,
+    },
   });
+  // console.log(channelMessages);
   res.status(200).json({ channelMessages, channel });
 }));
 
