@@ -57,26 +57,37 @@ io.on('connection', async (socket) => {
   });
 
   // Get channels from DB
-  const channels = await Channel.findAll();
 
-  // Loop through all the channels and add listeners for messages to all channels
-  for (let channel of channels) {
-    console.log(`Listening for messages from ${channel.title}`);
-    // Steps for getting a message for channel
-    //  1. Log message
-    //  2. Add message to DB with addMessageToChannel function
-    //  3. Emit message to channel and back to sender
-    //
-    //  Note: socket.to only sends messages to other sockets joined to the room
-    //        this is why we have to send the message back to original socket
+  const addListeners = async () => {
 
-    socket.on(channel.id, async ({ message, userId }) => {
-      const newMessage = await addMessageToChannel(userId, channel.id, message);
-      socket.to(channel.id).emit(channel.id, newMessage);
-      socket.emit(channel.id, newMessage);
-    });
+    const channels = await Channel.findAll();
+    // Loop through all the channels and add listeners for messages to all channels
+    for (let channel of channels) {
+      console.log(`Listening for messages from ${channel.title}`);
+      // Steps for getting a message for channel
+      //  1. Log message
+      //  2. Add message to DB with addMessageToChannel function
+      //  3. Emit message to channel and back to sender
+      //
+      //  Note: socket.to only sends messages to other sockets joined to the room
+      //        this is why we have to send the message back to original socket
+
+      socket.on(channel.id, async ({ message, userId }) => {
+        const newMessage = await addMessageToChannel(userId, channel.id, message);
+        socket.to(channel.id).emit(channel.id, newMessage);
+        socket.emit(channel.id, newMessage);
+      });
+    }
   }
+
+  addListeners();
+
+
+  socket.on('reloadChannels', addListeners);
+
 });
+
+
 
 // Catch unhandled requests and forward to error handler.
 app.use((req, res, next) => {
