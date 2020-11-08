@@ -25,7 +25,6 @@ router.get('/:channelId/messages', asyncHandler(async (req, res) => {
       // include: User,
     },
   });
-  // console.log(channelMessages);
   res.status(200).json({ channelMessages, channel });
 }));
 
