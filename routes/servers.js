@@ -76,7 +76,7 @@ router.post("/:serverId/join/", asyncHandler(async (req, res) => {
             userId
         }
     })
-    console.log(connectionExists)
+    // console.log(connectionExists)
     if (connectionExists.length) {
         res.status(599).json('member connection already exists')
         return;
