@@ -83,7 +83,15 @@ io.on('connection', async (socket) => {
   addListeners();
 
 
-  socket.on('reloadChannels', addListeners);
+  socket.on('addChannelListener', channel => {
+    console.log(`Added listening for channel ${channel.title}`);
+
+    socket.on(channel.id, async ({ message, userId }) => {
+        const newMessage = await addMessageToChannel(userId, channel.id, message);
+        socket.to(channel.id).emit(channel.id, newMessage);
+        socket.emit(channel.id, newMessage);
+      });
+  });
 
 });
 
