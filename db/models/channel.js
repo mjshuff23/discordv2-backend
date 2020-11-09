@@ -1,8 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Channel = sequelize.define('Channel', {
-    title: DataTypes.STRING,
-    topic: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING(100),
+    },
+    topic: {
+      type: DataTypes.STRING(1024),
+    },
     serverId: DataTypes.INTEGER
   }, {});
   Channel.associate = function(models) {

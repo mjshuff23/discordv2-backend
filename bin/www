@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-
+// Grab port from configuration files in 'config' folder
 const { port } = require("../config");
 
+// Import app and database
 const http = require('../app');
 const db = require("../db/models");
 
@@ -10,11 +11,11 @@ db.sequelize
   .authenticate()
   .then(() => {
     console.log("Database connection success! Sequelize is ready to use...");
-
     // Start listening for connections.
     http.listen(port, () => console.log(`Listening on port ${port}...`));
   })
   .catch((err) => {
+    // Report any possible errors
     console.log("Database connection failure.");
     console.error(err);
   });

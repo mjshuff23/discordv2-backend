@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db/models");
-const { asyncHandler, handleValidationErrors } = require("../utils");
+const { asyncHandler, } = require("../utils");
 const { Server, Channel, Server_Member, User } = db;
 const { Op } = require("sequelize");
 
@@ -14,26 +14,26 @@ router.get('/:userId', asyncHandler(async (req, res) => {
             ownerId: userId,
         },
         include: { model: Channel },
-    })
+    });
 
     const memberOf = await Server_Member.findAll({
         where: {
             userId,
         }
-    })
+    });
 
     const memberServerIds = memberOf.map((memberServer) => {
         // For every memberServer column, grab that server, push onto memberServers array
         return memberServer.serverId;
     });
-
     const memberServers = await Server.findAll({
         where: {
             id: {
                 [Op.in]: [...memberServerIds],
             }
         }
-    })
+    });
+
     res.json({ servers, otherServers: memberServers })
 }));
 
@@ -45,16 +45,11 @@ router.post('/', asyncHandler(async(req, res) => {
         ownerId: userId,
     });
 
-    const channelInstance = await Channel.create({
+    await Channel.create({
         title: "Home",
         topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
         serverId: serverInstance.id,
     })
-
-    // const memberInstance = await Server_Members.create({
-    //     userId,
-    //     serverId: serverInstance.id,
-    // });
 
     const serverToReturn = {
         id: serverInstance.id,
@@ -76,13 +71,12 @@ router.post("/:serverId/join/", asyncHandler(async (req, res) => {
             userId
         }
     })
-    // console.log(connectionExists)
     if (connectionExists.length) {
         res.status(599).json('member connection already exists')
         return;
     }
 
-    const memberConnection = await Server_Member.create({ serverId, userId });
+    await Server_Member.create({ serverId, userId });
 
     res.status(200).json({server, user});
 }));

@@ -9,7 +9,6 @@
 | email          | varchar(40) | not null, unique      |
 | hashedPassword | varchar     | not null, (binary)    |
 | avatarUrl      | varchar     |                       |
-| phone          | varchar(25) |                       |
 
 ## Servers
 
@@ -52,45 +51,3 @@
 | userId         | integer       | foreign key, not null |
 | body           | varchar(2000) | not null              |
 | createdAt      | timestamp     | not null              |
-
-## Pins
-
-| attribute name   | data type | details               |
-| ---------------- | --------- | --------------------- |
-| id               | integer   | primary key, not null |
-| channelId        | integer   | not null, foreign key |
-| channelMessageId | integer   | not null, foreign key |
-
-## Reactions
-
-| attribute name   | data type | details               |
-| ---------------- | --------- | --------------------- |
-| id               | integer   | not null, primary key |
-| channelMessageId | integer   | foreign key           |
-| directMessageId  | integer   | foreign key           |
-| userId           | integer   | not null, foreign key |
-| unicodeVal       | varchar   | not null              |
-
-## GroupMembers
-
-| attribute name | data type | details               |
-| -------------- | --------- | --------------------- |
-| id             | integer   | not null, primary key |
-| directGroupId  | integer   | not null, foreign key |
-| userId         | integer   | not null, foreign key |
-
-## DirectGroups
-
-| attribute name | data type | details               |
-| -------------- | --------- | --------------------- |
-| id             | integer   | not null, primary key |
-
-## DirectMessages
-
-| attribute name | data type    | details               |
-| -------------- | ------------ | --------------------- |
-| id             | integer      | not null, primary key |
-| directGroupId  | integer      | not null, foreign key |
-| userId         | integer      | not null, foreign key |
-| body           | varchar(500) | not null              |
-| createdAt      | date         |                       |

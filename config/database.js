@@ -1,3 +1,5 @@
+// Here we are just grabbing all the configuration files we need and exporting it
+
 const config = require("./index");
 
 const db = config.db;
