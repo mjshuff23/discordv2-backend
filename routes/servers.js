@@ -66,16 +66,16 @@ router.post("/:serverId/join/", asyncHandler(async (req, res) => {
     const server = await Server.findByPk(serverId, {
     });
     const user = await User.findByPk(userId);
-    const connectionExists = await Server_Member.findAll({
-        where: {
-            serverId,
-            userId
-        }
-    });
-    if (connectionExists.length) {
-        res.status(599).json('member connection already exists');
-        return;
-    }
+    // const connectionExists = await Server_Member.findAll({
+    //     where: {
+    //         serverId,
+    //         userId
+    //     }
+    // });
+    // if (connectionExists.length) {
+    //     res.status(599).json('member connection already exists');
+    //     return;
+    // }
 
     await Server_Member.create({ serverId, userId });
 
