@@ -31,7 +31,6 @@ io.on('connection', async (socket) => {
   // When joined, retrieve channel from DB and join socket to channel
   // Makes it so messages to this channel flow back to user's connection
   socket.on('join', async (channel) => {
-    console.log(channel);
     let channelObject = await Channel.findByPk(channel.id);
     if (channelObject) {
       socket.join(channelObject.id, async () => {
@@ -42,7 +41,6 @@ io.on('connection', async (socket) => {
 
   // When leaving a channel, get channel, and inform socket we have left
   socket.on('leave', async (channel) => {
-    console.log(channel);
     let channelObject = await Channel.findByPk(channel.id);
     if (channelObject) {
       socket.leave(channelObject.id, async () => {

@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 
 // Find all servers related to logged in user
 router.get('/:userId', asyncHandler(async (req, res) => {
-    const userId = Number.parseInt(req.params.userId)
+    const userId = Number.parseInt(req.params.userId);
 
     const servers = await Server.findAll({
         where: {
@@ -34,10 +34,10 @@ router.get('/:userId', asyncHandler(async (req, res) => {
         }
     });
 
-    res.json({ servers, otherServers: memberServers })
+    res.json({ servers, otherServers: memberServers });
 }));
 
-router.post('/', asyncHandler(async(req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
     const { title, userId } = req.body;
 
     const serverInstance = await Server.create({
@@ -45,40 +45,41 @@ router.post('/', asyncHandler(async(req, res) => {
         ownerId: userId,
     });
 
-    await Channel.create({
+    const homeChannel = await Channel.create({
         title: "Home",
         topic: `Welcome to your new Server, ${serverInstance.title}!  This is your Home channel, but feel free to create more!`,
         serverId: serverInstance.id,
-    })
+    });
 
-    const serverToReturn = {
+    const server = {
         id: serverInstance.id,
         title: serverInstance.title,
         ownerId: serverInstance.ownerId,
-    }
+    };
 
-    res.status(200).json({serverToReturn});
+    res.status(200).json({ server, homeChannel });
 }));
 
 router.post("/:serverId/join/", asyncHandler(async (req, res) => {
     const { serverId, userId } = req.body;
 
-    const server = await Server.findByPk(serverId);
+    const server = await Server.findByPk(serverId, {
+    });
     const user = await User.findByPk(userId);
     const connectionExists = await Server_Member.findAll({
         where: {
             serverId,
             userId
         }
-    })
+    });
     if (connectionExists.length) {
-        res.status(599).json('member connection already exists')
+        res.status(599).json('member connection already exists');
         return;
     }
 
     await Server_Member.create({ serverId, userId });
 
-    res.status(200).json({server, user});
+    res.status(200).json({ server, user });
 }));
 
 module.exports = router;
