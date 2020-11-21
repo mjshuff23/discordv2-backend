@@ -6,7 +6,7 @@ const usersRouter = require("./routes/users");
 const serversRouter = require("./routes/servers");
 const channelsRouter = require("./routes/channels");
 const { environment } = require("./config");
-const { Channel } = require('./db/models');
+const { Channel, User } = require('./db/models');
 const { addMessageToChannel } = require("./utils");
 
 // Setup socket.io to work with express
@@ -72,11 +72,21 @@ io.on('connection', async (socket) => {
 
       socket.on(channel.id, async ({ message, userId }) => {
         const newMessage = await addMessageToChannel(userId, channel.id, message);
+        // const messageToReturn = {
+        //   id: newMessage.message.id,
+        //   body: newMessage.message.body,
+        //   userId: newMessage.message.userId,
+        //   channelId: newMessage.message.channelId,
+        //   createdAt: newMessage.message.createdAt,
+        //   updatedAt: newMessage.message.updatedAt,
+        //   User: newMessage.user,
+        // };
+        // console.log(`******************************`, messageToReturn);
         socket.to(channel.id).emit(channel.id, newMessage);
         socket.emit(channel.id, newMessage);
       });
     }
-  }
+  };
 
   addListeners();
 
@@ -85,10 +95,11 @@ io.on('connection', async (socket) => {
     console.log(`Added listening for channel ${channel.title}`);
 
     socket.on(channel.id, async ({ message, userId }) => {
-        const newMessage = await addMessageToChannel(userId, channel.id, message);
-        socket.to(channel.id).emit(channel.id, newMessage);
-        socket.emit(channel.id, newMessage);
-      });
+      const newMessage = await addMessageToChannel(userId, channel.id, message);
+      // Grab User
+      socket.to(channel.id).emit(channel.id, newMessage);
+      socket.emit(channel.id, newMessage);
+    });
   });
 
 });
