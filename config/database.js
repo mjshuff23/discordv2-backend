@@ -22,8 +22,12 @@ module.exports = {
     logging: false,
   },
   production: {
-    use_env_variable: 'DATABASE_URL',
-    dialect: 'postgres',
-    seederStorage: 'sequelize',
+    username,
+    password,
+    database,
+    host,
+    use_env_variable: "DATABASE_URL",
+    dialect: "postgres",
+    seederStorage: "sequelize",
   }
 };
