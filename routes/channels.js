@@ -12,20 +12,23 @@ router.get('/:channelId/messages', asyncHandler(async (req, res) => {
     where: {
       channelId: channelId,
     },
+    include: {
+      model: User
+    }
   });
   res.status(200).json({ channelMessages, channel });
 }));
 
 router.get('/:serverId', asyncHandler(async (req, res) => {
-    const channels = await Channel.findAll({
-        where: {
-          serverId: Number.parseInt(req.params.serverId),
-        }
-    })
-    res.status(200).json({ channels })
+  const channels = await Channel.findAll({
+    where: {
+      serverId: Number.parseInt(req.params.serverId),
+    }
+  });
+  res.status(200).json({ channels });
 }));
 
-router.post('/', asyncHandler(async(req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
   const { title, topic, serverId } = req.body;
 
   const channelInstance = await Channel.create({ title, topic, serverId });
@@ -35,7 +38,7 @@ router.post('/', asyncHandler(async(req, res) => {
     title: channelInstance.title,
     topic: channelInstance.topic,
     serverId: channelInstance.serverId,
-  }
+  };
 
   res.status(200).json(channelToReturn);
 }));

@@ -21,4 +21,9 @@ module.exports = {
     DB_CONN: "sqlite.memory",
     logging: false,
   },
+  production: {
+    dialect: "postgres",
+    seederStorage: "sequelize",
+    use_env_variable: "DATABASE_URL"
+  }
 };
