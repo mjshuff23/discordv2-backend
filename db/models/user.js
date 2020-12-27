@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     hashedPassword: DataTypes.STRING,
     avatarUrl: DataTypes.STRING
   }, {});
-  User.associate = function(models) {
-    User.hasMany(models.Server, { foreignKey: 'ownerId'});
-    User.hasMany(models.Channel_Message, { foreignKey: 'userId'});
-    User.hasMany(models.Server_Member, { foreignKey: 'userId'});
+  User.associate = function (models) {
+    User.hasMany(models.Server, { foreignKey: 'ownerId', onDelete: 'CASCADE', hooks: true });
+    User.hasMany(models.Channel_Message, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true });
+    User.hasMany(models.Server_Member, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true });
   };
 
   User.prototype.validatePassword = function (password) {
@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compareSync(password, this.hashedPassword.toString());
   };
 
-  User.prototype.getUsername = function() {
+  User.prototype.getUsername = function () {
     return this.username;
-  }
+  };
   return User;
 };
