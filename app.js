@@ -61,7 +61,7 @@ io.on('connection', async (socket) => {
     const channels = await Channel.findAll();
     // Loop through all the channels and add listeners for messages to all channels
     for (let channel of channels) {
-      console.log(`Listening for messages from ${channel.title}`);
+      console.log(`Listening for messages from ${channel.title} - ${channel.id}`);
       // Steps for getting a message for channel
       //  1. Log message
       //  2. Add message to DB with addMessageToChannel function
@@ -72,16 +72,6 @@ io.on('connection', async (socket) => {
 
       socket.on(channel.id, async ({ message, userId }) => {
         const newMessage = await addMessageToChannel(userId, channel.id, message);
-        // const messageToReturn = {
-        //   id: newMessage.message.id,
-        //   body: newMessage.message.body,
-        //   userId: newMessage.message.userId,
-        //   channelId: newMessage.message.channelId,
-        //   createdAt: newMessage.message.createdAt,
-        //   updatedAt: newMessage.message.updatedAt,
-        //   User: newMessage.user,
-        // };
-        // console.log(`******************************`, messageToReturn);
         socket.to(channel.id).emit(channel.id, newMessage);
         socket.emit(channel.id, newMessage);
       });
